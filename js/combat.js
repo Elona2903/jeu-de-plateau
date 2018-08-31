@@ -1,4 +1,6 @@
 function fight() {
+
+
     alert("que le combat commence");
     alert(player.name + " commence");
     if (player.name = "joueurRouge") {
