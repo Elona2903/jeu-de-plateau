@@ -1,0 +1,71 @@
+#jeu {
+    position: relative;
+    width: 600px;
+    height: 600px;
+    background-color: white
+}
+
+h2,
+h3 {
+    text-align: center;
+}
+
+.infojoueur {
+    width: 25%;
+    text-align: left;
+}
+
+.plateau {
+    width: 50%;
+    display: flex;
+    justify-content: center
+}
+
+.move {
+    text-align: left;
+    padding-left: 10px;
+}
+
+.jeu {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.ligne {
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    width: 600px;
+    height: 60px;
+}
+
+.case {
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    display: inline-block;
+    border-width: 2.5px 2.5px 2.5px 2.5px;
+    border-color: black;
+    border-style: solid;
+    width: 10%;
+    height: 60px;
+    padding-top: 0px;
+    padding-left: 0px;
+}
+
+.player {
+    padding-top: 0px;
+    padding-left: 0px;
+    position: absolute;
+    z-index: 2;
+}
+
+body {
+    background-color: antiquewhite;
+}
+
+.weapon {
+    padding-top: 0px;
+    padding-left: 0px;
+    position: absolute;
+}

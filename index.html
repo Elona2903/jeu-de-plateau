@@ -1,0 +1,47 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Jeu de plateau</title>
+    <link href="css/style.css" rel="stylesheet">
+</head>
+
+<body>
+    <header>
+        <h1>Jeu de plateau</h1>
+    </header>
+    <div class="jeu">
+
+        <div id="joueur1" class="infojoueur">
+            <h2>joueur 1</h2>
+            <h3>se déplacer</h3>
+            <div class="move">
+                <p>A droite <span class="droitej1" onclick="alert('On fait comme ça !');"></span> </p>
+                <p>A gauche <span class="gauchej1" onclick="alert('On fait comme ça !');"></span></p>
+                <p>En haut <span class="hautj1" onclick="alert('On fait comme ça !');"></span></p>
+                <p>En bas <span class="basj1" onclick="alert('On fait comme ça !');"></span></p>
+
+            </div>
+            <p class='santej1'></p>
+        </div>
+        <div class="plateau">
+            <div id="jeu">
+            </div>
+        </div>
+        <div id="joueur2" class="infojoueur">
+            <h2>joueur 2</h2>
+
+            <h3>se déplacer</h3>
+            <div class="move">
+                <p>Flèches directionnelles</p>
+            </div>
+            <p class='santej2'></p>
+        </div>
+
+        <script src="http://code.jquery.com/jquery.js"></script>
+
+        <script src="js/initialisation.js"></script>
+        <script src=" js/deplacement.js "></script>
+        <script src="js/combat.js "></script>
+</body>
