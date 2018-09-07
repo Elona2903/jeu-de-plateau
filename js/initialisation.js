@@ -33,7 +33,7 @@ var newPlayer = {
     //fonction permettant d'enlever les points de vie au joueur
     receivesDamage: function(opponent) {
         this.health -= opponent.getDamage();
-        alert("PV de " + this.name + ' : ' + this.health + ' pv ');
+        alert("PV de " + this.name + ' : ' + players[0].health + ' pv ');
     },
     //fonction contenant les actions d'un mouvement
     movementActions: function(idOperator) {
@@ -97,7 +97,7 @@ var board = {
         for (var j = 0; j < this.nbCol; j++) {
             $(`<div class="case"></div>`).appendTo($(".ligne"));
         };
-        //donne un id de 1 à 100 à chaque case pour le repérages des éléments
+        //donne un id de 1 $ 100 à chaque case pour le repérages des éléments
         for (var i = 0; i < this.nbCase; i++) {
             var nombre = parseInt(i + 1);
             var cases = document.getElementsByClassName('case');

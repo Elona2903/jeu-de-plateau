@@ -7,7 +7,7 @@ function fight() {
         players[1].receivesDamage(players[0]);
     } else {
         players[0].receivesDamage(players[1]);
-    };
+    }
     while (players[0].health > 0 && players[1].health > 0) {
         var player1Choice = prompt(" joueur 1 :Entrer A pour attaquer et D pour vous défendre");
         var player2Choice = prompt("joueur 2 : Entrer A pour attaquer et D pour vous défendre");
@@ -24,8 +24,8 @@ function fight() {
         }
     }
     if (players[0].health === 0) {
-        alert("joueur Rouge à gagné");
+        alert("joueur Rouge à gagné")
     } else {
-        alert("joueur bleu à gagné");
-    };
+        alert("joueur bleu à gagné")
+    }
 }
