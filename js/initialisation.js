@@ -8,18 +8,6 @@ var weaponEx = {
         this.image = image;
     }
 };
-//initialisation des différentes armes
-var scepter = Object.create(weaponEx);
-scepter.init("Sceptre", 20, "image/sceptre.jpg");
-var sling = Object.create(weaponEx);
-sling.init("Fronde", 15, "image/fronde.jpg");
-var wood = Object.create(weaponEx);
-wood.init("Bois", 5, "image/bois.jpg");
-var rapier = Object.create(weaponEx);
-rapier.init("Rapière", 10, "image/rapiere.jpg");
-var sword = Object.create(weaponEx);
-sword.init("epee", 10, "image/epee.jpg");
-weapons.push(scepter, sling, wood, rapier, sword);
 
 var players = [];
 //modèle de l'objet joueurs
@@ -91,12 +79,6 @@ var newPlayer = {
         };
     }
 };
-//initialisation des différents personnages
-var playerOne = Object.create(newPlayer);
-playerOne.init("joueurRouge", weapons[3], "image/joueur1.jpg", 81, 68, 90, 83);
-var playerTwo = Object.create(newPlayer);
-playerTwo.init("joueurBleu", weapons[4], "image/joueur2.jpg", 37, 39, 38, 40);
-players.push(playerOne, playerTwo);
 
 //création de l'objet plateau;
 var board = {
@@ -188,8 +170,35 @@ var board = {
         }
     }
 };
-//affichage de la grille ;
-board.init();
+
+var game = {
+    init: function() {
+
+        //initialisation des différents personnages
+        var playerOne = Object.create(newPlayer);
+        playerOne.init("joueurRouge", weapons[3], "image/joueur1.jpg", 81, 68, 90, 83);
+        var playerTwo = Object.create(newPlayer);
+        playerTwo.init("joueurBleu", weapons[4], "image/joueur2.jpg", 37, 39, 38, 40);
+        players.push(playerOne, playerTwo);
+        //initialisation des différentes armes
+        var scepter = Object.create(weaponEx);
+        scepter.init("Sceptre", 20, "image/sceptre.jpg");
+        var sling = Object.create(weaponEx);
+        sling.init("Fronde", 15, "image/fronde.jpg");
+        var wood = Object.create(weaponEx);
+        wood.init("Bois", 5, "image/bois.jpg");
+        var rapier = Object.create(weaponEx);
+        rapier.init("Rapière", 10, "image/rapiere.jpg");
+        var sword = Object.create(weaponEx);
+        sword.init("epee", 10, "image/epee.jpg");
+        weapons.push(scepter, sling, wood, rapier, sword);
+        //affichage de la grille
+        board.init()
+
+    },
+};
+//initialisation du jeu
+game.init();
 var nbTurn = 0;
 var player = players[1];
 //affichage données des joueurs:;
