@@ -27,24 +27,56 @@ var newPlayer = {
         return parseFloat($('#' + this.name).parent().attr("id"));
     },
     //permet de stocker les dégats fait par un joueur
-    getDamage: function() {
-        return this.weapon.damage;
+    getDamage: function(ratio) {
+        return this.weapon.damage * ratio;
     },
     //fonction permettant d'enlever les points de vie au joueur
-    receivesDamage: function(opponent) {
-        this.health -= opponent.getDamage();
+    receivesDamage: function(opponent, action) {
+        if (action === "attack") {
+            this.health -= opponent.getDamage(1);
+        } else if (action === "defend") {
+            this.health -= opponent.getDamage(0.5);
+        }
         alert("PV de " + this.name + ' : ' + players[0].health + ' pv ');
     },
     //fonction contenant les actions d'un mouvement
-    movementActions: function(idOperator) {
-        id = this.positionCaseId() + idOperator;
+    moveToLeft: function() {
+        id = this.positionCaseId() - 1;
         $('#' + this.name).appendTo($("#" + id + ""));
-        this.changeWeapon(id);
+        this.changeWeapon();
         this.alternatePlayer();
         board.startFight();
 
         $('.sante').text("santé " + parseInt(player.health));
     },
+    moveToRight: function() {
+        id = this.positionCaseId() + 1;
+        $('#' + this.name).appendTo($("#" + id + ""));
+        this.changeWeapon();
+        this.alternatePlayer();
+        board.startFight();
+
+        $('.sante').text("santé " + parseInt(player.health));
+    },
+    moveToBottom: function() {
+        id = this.positionCaseId() + 10;
+        $('#' + this.name).appendTo($("#" + id + ""));
+        this.changeWeapon();
+        this.alternatePlayer();
+        board.startFight();
+
+        $('.sante').text("santé " + parseInt(player.health));
+    },
+    moveToTop: function() {
+        id = this.positionCaseId() - 10;
+        $('#' + this.name).appendTo($("#" + id + ""));
+        this.changeWeapon();
+        this.alternatePlayer();
+        board.startFight();
+
+        $('.sante').text("santé " + parseInt(player.health));
+    },
+
     //fonction de changement de joueurs
     changePlayer: function() {
 
@@ -66,12 +98,12 @@ var newPlayer = {
         };
     },
     //fonction de changement de l'arme
-    changeWeapon: function(idCase) {
-        if ($("#" + idCase + " :first-child").attr("class") === "weapon") {
+    changeWeapon: function() {
+        if ($("#" + this.positionCaseId() + " :first-child").attr("class") === "weapon") {
             for (var i = 0; i < weapons.length; i++) {
-                if ($("#" + idCase + " :first-child").attr("alt") === weapons[i].name) {
+                if ($("#" + this.positionCaseId() + " :first-child").attr("alt") === weapons[i].name) {
                     ($("#" + weapons[i].name + "")).remove();
-                    $("<img class='weapon' id=" + this.weapon.name + " src='" + this.weapon.image + "' alt='" + this.weapon.name + "'/>").appendTo($("#" + idCase + ""));
+                    $("<img class='weapon' id=" + this.weapon.name + " src='" + this.weapon.image + "' alt='" + this.weapon.name + "'/>").appendTo($("#" + this.positionCaseId() + ""));
                     this.weapon = weapons[i];
                 };
             };
@@ -174,12 +206,7 @@ var board = {
 var game = {
     init: function() {
 
-        //initialisation des différents personnages
-        var playerOne = Object.create(newPlayer);
-        playerOne.init("joueurRouge", weapons[3], "image/joueur1.jpg", 81, 68, 90, 83);
-        var playerTwo = Object.create(newPlayer);
-        playerTwo.init("joueurBleu", weapons[4], "image/joueur2.jpg", 37, 39, 38, 40);
-        players.push(playerOne, playerTwo);
+
         //initialisation des différentes armes
         var scepter = Object.create(weaponEx);
         scepter.init("Sceptre", 20, "image/sceptre.jpg");
@@ -192,15 +219,20 @@ var game = {
         var sword = Object.create(weaponEx);
         sword.init("epee", 10, "image/epee.jpg");
         weapons.push(scepter, sling, wood, rapier, sword);
+        //initialisation des différents personnages
+        var playerOne = Object.create(newPlayer);
+        playerOne.init("joueurRouge", weapons[3], "image/joueur1.jpg", 81, 68, 90, 83);
+        var playerTwo = Object.create(newPlayer);
+        playerTwo.init("joueurBleu", weapons[4], "image/joueur2.jpg", 37, 39, 38, 40);
+        players.push(playerOne, playerTwo);
         //affichage de la grille
         board.init()
 
     },
 };
 //initialisation du jeu
+
 game.init();
-var nbTurn = 0;
-var player = players[1];
 //affichage données des joueurs:;
 $('.droitej1').append(String.fromCharCode(players[0].right));
 $('.gauchej1').append(String.fromCharCode(players[0].left));
