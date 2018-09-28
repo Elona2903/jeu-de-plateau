@@ -1,112 +1,77 @@
-var game = {
-    //création des armes;
-    weapons: [],
-    //modèle de l'objet armes
-    weaponEx: {
-        init: function(name, damage, image) {
-            this.name = name;
-            this.damage = damage;
-            this.image = image;
-        }
+//création des armes;
+
+//modèle de l'objet armes
+var weaponEx = {
+    init: function(name, damage, image) {
+        this.name = name;
+        this.damage = damage;
+        this.image = image;
+    }
+};
+
+//modèle de l'objet joueurs
+var newPlayer = {
+    init: function(name, weapon, image, left, right, up, down) {
+        this.name = name;
+        this.health = 100;
+        this.weapon = weapon;
+        this.image = image;
+        this.left = left;
+        this.right = right;
+        this.up = up;
+        this.down = down;
     },
-    players: [],
-    //modèle de l'objet joueurs
-    newPlayer: {
-        init: function(name, weapon, image, left, right, up, down) {
-            this.name = name;
-            this.health = 100;
-            this.weapon = weapon;
-            this.image = image;
-            this.left = left;
-            this.right = right;
-            this.up = up;
-            this.down = down;
-        },
-        //permet de récuperer l'id de la case du joueur
-        positionCaseId: function() {
-            return parseFloat($('#' + this.name).parent().attr("id"));
-        },
-        //permet de stocker les dégats fait par un joueur
-        getDamage: function(ratio) {
-            return this.weapon.damage * ratio;
-        },
-        //fonction permettant d'enlever les points de vie au joueur
-        receivesDamage: function(opponent, action) {
-            if (action === "attack") {
-                this.health -= opponent.getDamage(1);
-            } else if (action === "defend") {
-                this.health -= opponent.getDamage(0.5);
-            }
-            alert("PV de " + this.name + ' : ' + game.players[0].health + ' pv ');
-        },
-        //fonction contenant les actions d'un mouvement
-        moveToLeft: function() {
-            id = this.positionCaseId() - 1;
-            $('#' + this.name).appendTo($("#" + id + ""));
-            this.changeWeapon();
-            this.alternatePlayer();
-            game.board.startFight();
+    //permet de récuperer l'id de la case du joueur
+    positionCaseId: function() {
+        return parseFloat($('#' + this.name).parent().attr("id"));
+    },
+    //permet de stocker les dégats fait par un joueur
+    getDamage: function() {
+        return this.weapon.damage;
+    },
+    //fonction permettant d'enlever les points de vie au joueur
+    receivesDamage: function(opponent) {
+        this.health -= opponent.getDamage();
+        alert("PV de " + this.name + ' : ' + players[0].health + ' pv ');
+    },
+    //fonction contenant les actions d'un mouvement
+    movementActions: function(idOperator) {
+        id = this.positionCaseId() + idOperator;
+        $('#' + this.name).appendTo($("#" + id + ""));
+        this.changeWeapon(id);
+        this.alternatePlayer();
+        board.startFight();
 
-            $('.sante').text("santé " + parseInt(player.health));
-        },
-        moveToRight: function() {
-            id = this.positionCaseId() + 1;
-            $('#' + this.name).appendTo($("#" + id + ""));
-            this.changeWeapon();
-            this.alternatePlayer();
-            game.board.startFight();
+        $('.sante').text("santé " + parseInt(player.health));
+    },
+    //fonction de changement de joueurs
+    changePlayer: function() {
 
-            $('.sante').text("santé " + parseInt(player.health));
-        },
-        moveToBottom: function() {
-            id = this.positionCaseId() + 10;
-            $('#' + this.name).appendTo($("#" + id + ""));
-            this.changeWeapon();
-            this.alternatePlayer();
-            game.board.startFight();
+        if (this === players[0]) {
+            player = players[1];
 
-            $('.sante').text("santé " + parseInt(player.health));
-        },
-        moveToTop: function() {
-            id = this.positionCaseId() - 10;
-            $('#' + this.name).appendTo($("#" + id + ""));
-            this.changeWeapon();
-            this.alternatePlayer();
-            game.board.startFight();
+        } else if (this === players[1]) {
+            player = players[0];
+        };
+    },
+    //compteur de tour et changement ;
+    alternatePlayer: function() {
+        if (nbTurn < 2) {
+            nbTurn++;
+        } else {
+            nbTurn = 0;
+            this.changePlayer();
 
-            $('.sante').text("santé " + parseInt(player.health));
-        },
-
-        //fonction de changement de joueurs
-        changePlayer: function() {
-
-            if (this === game.players[0]) {
-                player = game.players[1];
-
-            } else if (this === game.players[1]) {
-                player = game.players[0];
-            };
-        },
-        //compteur de tour et changement ;
-        alternatePlayer: function() {
-            if (nbTurn < 2) {
-                nbTurn++;
-            } else {
-                nbTurn = 0;
-                this.changePlayer();
-
-
-            };
-        },
-        //fonction de changement de l'arme
-        changeWeapon: function() {
-            if ($("#" + this.positionCaseId() + " :first-child").attr("class") === "weapon") {
-                for (var i = 0; i < game.weapons.length; i++) {
-                    if ($("#" + this.positionCaseId() + " :first-child").attr("alt") === game.weapons[i].name) {
-                        ($("#" + game.weapons[i].name + "")).remove();
-                        $("<img class='weapon' id=" + this.weapon.name + " src='" + this.weapon.image + "' alt='" + this.weapon.name + "'/>").appendTo($("#" + this.positionCaseId() + ""));
-                        this.weapon = game.weapons[i];
-                    };
+        };
+    },
+    //fonction de changement de l'arme
+    changeWeapon: function(idCase) {
+        if ($("#" + idCase + " :first-child").attr("class") === "weapon") {
+            for (var i = 0; i < weapons.length; i++) {
+                if ($("#" + idCase + " :first-child").attr("alt") === weapons[i].name) {
+                    ($("#" + weapons[i].name + "")).remove();
+                    $("<img class='weapon' id=" + this.weapon.name + " src='" + this.weapon.image + "' alt='" + this.weapon.name + "'/>").appendTo($("#" + idCase + ""));
+                    this.weapon = weapons[i];
                 };
 
             };
@@ -206,8 +171,14 @@ var game = {
 
 
     init: function() {
-
-
+        var weapons = [];
+        var players = [];
+        //initialisation des différents personnages
+        var playerOne = Object.create(newPlayer);
+        playerOne.init("joueurRouge", weapons[3], "image/joueur1.jpg", 81, 68, 90, 83);
+        var playerTwo = Object.create(newPlayer);
+        playerTwo.init("joueurBleu", weapons[4], "image/joueur2.jpg", 37, 39, 38, 40);
+        players.push(playerOne, playerTwo);
         //initialisation des différentes armes
         var scepter = Object.create(this.weaponEx);
         scepter.init("Sceptre", 20, "image/sceptre.jpg");
@@ -218,22 +189,30 @@ var game = {
         var rapier = Object.create(this.weaponEx);
         rapier.init("Rapière", 10, "image/rapiere.jpg");
         var sword = Object.create(this.weaponEx);
-        sword.init("epee", 10, "image/epee.jpg");
+        sword.init("epee", 10, "image/epee.jpg"); <<
+        <<
+        << < HEAD
         this.weapons.push(scepter, sling, wood, rapier, sword);
         //initialisation des différents personnages
         var playerOne = Object.create(this.newPlayer);
         playerOne.init("joueurRouge", this.weapons[3], "image/joueur1.jpg", 81, 68, 90, 83);
         var playerTwo = Object.create(this.newPlayer);
         playerTwo.init("joueurBleu", this.weapons[4], "image/joueur2.jpg", 37, 39, 38, 40);
-        this.players.push(playerOne, playerTwo);
-        //affichage de la grille
+        this.players.push(playerOne, playerTwo); ===
+        ===
+        =
+        weapons.push(scepter, sling, wood, rapier, sword); >>>
+        >>>
+        > parent of e01ef17...preparation mentorat
+            //affichage de la grille
         this.board.init()
 
     },
 };
 //initialisation du jeu
-
 game.init();
+var nbTurn = 0;
+var player = players[1];
 //affichage données des joueurs:;
 $('.droitej1').append(String.fromCharCode(game.players[0].right));
 $('.gauchej1').append(String.fromCharCode(game.players[0].left));

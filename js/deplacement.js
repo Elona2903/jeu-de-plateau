@@ -1,27 +1,25 @@
-var nbTurn = 0;
-var player = game.players[1];
 $(document).keydown(function(e) {
     if (e.keyCode === player.left) { //left;
-        if (game.board.isLeftAccessible()) {
-            player.moveToLeft();
+        if (board.isLeftAccessible()) {
+            player.movementActions(-1);
         } else {
             alert("Vous ne pouvez pas effectuer ce déplacement");
         };
     } else if (e.keyCode === player.up) { //up;
-        if (game.board.isTopAccessible()) {
-            player.moveToTop();
+        if (board.isTopAccessible()) {
+            player.movementActions(-10);
         } else {
             alert("Vous ne pouvez pas effectuer ce déplacement");
         };
     } else if (e.keyCode === player.right) { //right;
-        if (game.board.isRightAccessible()) {
-            player.moveToRight();
+        if (board.isRightAccessible()) {
+            player.movementActions(+1);
         } else {
             alert("Vous ne pouvez pas effectuer ce déplacement");
         };
     } else if (e.keyCode === player.down) { //down;
-        if (game.board.isBottomAccessible()) {
-            player.moveToBottom();
+        if (board.isBottomAccessible()) {
+            player.movementActions(+10);
         } else {
             alert("Vous ne pouvez pas effectuer ce déplacement");
         };
