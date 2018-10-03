@@ -4,11 +4,13 @@ function fight() {
     alert("que le combat commence");
     alert(player.name + " commence");
     if (player.name = "joueurRouge") {
-        players[1].receivesDamage(players[0], 'attack');
+        players[1].receivesDamage(players[0],'attack');
     } else {
-        players[0].receivesDamage(players[1], 'attack');
+        players[0].receivesDamage(players[1],'attack');
     }
     while (players[0].health > 0 && players[1].health > 0) {
+        /// $('button[name=j1]').removeAttr("disabled");
+
         var player1Choice = prompt(" joueur 1 :Entrer A pour attaquer et D pour vous défendre");
         var player2Choice = prompt("joueur 2 : Entrer A pour attaquer et D pour vous défendre");
 
@@ -29,3 +31,24 @@ function fight() {
         alert("joueur bleu à gagné")
     }
 }
+
+/*var player1Choice = $('input[name=player1]').click(function() {
+    var action = document.getElementsByName(player);
+    var choice;
+    for (var i = 0; i < action.length; i++) {
+        if (action[i].checked) {
+            choice = action[i].value;
+        }
+    }
+    return choice;
+});
+var player2Choice = $('input[name=player2]').click(function() {
+    var action = document.getElementsByName(player);
+    var choice;
+    for (var i = 0; i < action.length; i++) {
+        if (action[i].checked) {
+            choice = action[i].value;
+        }
+    }
+    return choice;
+});*/

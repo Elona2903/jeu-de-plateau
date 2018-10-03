@@ -37,7 +37,7 @@ var newPlayer = {
         } else if (action === "defend") {
             this.health -= opponent.getDamage(0.5);
         }
-        $('.sante').text("santé " + parseInt(player.health));
+        alert(player.name + ' PV : ' + player.health);
     },
     //fonction contenant les actions d'un mouvement
     moveToLeft: function() {
@@ -218,6 +218,8 @@ var game = {
         players.push(playerOne, playerTwo);
         //affichage de la grille
         board.init()
+
+        //$('input').attr("disabled", "disabled");
     }
 };
 
