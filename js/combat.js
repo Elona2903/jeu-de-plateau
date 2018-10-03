@@ -1,5 +1,4 @@
-function fight() {
-
+function oldFight() {
 
     alert("que le combat commence");
     alert(player.name + " commence");
@@ -8,20 +7,20 @@ function fight() {
     } else {
         players[0].receivesDamage(players[1],'attack');
     }
-    while (players[0].health > 0 && players[1].health > 0) {
+   /* while (players[0].health > 0 && players[1].health > 0) {
         /// $('button[name=j1]').removeAttr("disabled");
 
-        var player1Choice = prompt(" joueur 1 :Entrer A pour attaquer et D pour vous défendre");
-        var player2Choice = prompt("joueur 2 : Entrer A pour attaquer et D pour vous défendre");
+        var choicePlayer1 = prompt(" joueur 1 :Entrer A pour attaquer et D pour vous défendre");
+        var choicePlayer2 = prompt("joueur 2 : Entrer A pour attaquer et D pour vous défendre");
 
-        if (player1Choice === "a" && player2Choice === "a") {
+        if (choicePlayer1 === "attack" && choicePlayer2 === "attack") {
             players[0].receivesDamage(players[1], 'attack');
             players[1].receivesDamage(players[0], 'attack');
-        } else if (player1Choice === "d" && player2Choice === "a") {
+        } else if (choicePlayer1 === "defense" && choicePlayer2 === "attack") {
             players[0].receivesDamage(players[1], 'defend');
-        } else if (player1Choice === "a" && player2Choice === "d") {
+        } else if (choicePlayer1 === "attack" && choicePlayer2 === "defense") {
             players[1].receivesDamage(players[0], 'defend');
-        } else if (player1Choice === "d" && player2Choice === "d") {
+        } else if (choicePlayer1 === "defense" && choicePlayer2 === "defense") {
             alert("les points de vie des joueurs n'ont pas changés")
         }
     }
@@ -29,26 +28,50 @@ function fight() {
         alert("joueur Rouge à gagné")
     } else {
         alert("joueur bleu à gagné")
+    }*/
+}
+function fight(){
+    
+    if (choicePlayer1 === "attack" && choicePlayer2 === "attack") {
+        players[0].receivesDamage(players[1], 'attack');
+        players[1].receivesDamage(players[0], 'attack');
+    } else if (choicePlayer1 === "defense" && choicePlayer2 === "attack") {
+        players[0].receivesDamage(players[1], 'defend');
+    } else if (choicePlayer1 === "attack" && choicePlayer2 === "defense") {
+        players[1].receivesDamage(players[0], 'defend');
+    } else if (choicePlayer1 === "defense" && choicePlayer2 === "defense") {
+        alert("les points de vie des joueurs n'ont pas changés")
+    }
+    choicePlayer1=null;
+    choicePlayer2=null;
+}
+var choicePlayer1;
+var choicePlayer2;
+function setPlayerChoice(choice){
+    var actions = document.getElementsByName(player);
+
+    for (var i = 0; i < actions.length; i++) {
+        if (actions[i].checked) {
+            choice = actions[i].value;
+        }
     }
 }
-
-/*var player1Choice = $('input[name=player1]').click(function() {
-    var action = document.getElementsByName(player);
-    var choice;
-    for (var i = 0; i < action.length; i++) {
-        if (action[i].checked) {
-            choice = action[i].value;
-        }
+function checkFight(){
+    return (choicePlayer1 && choicePlayer2 && players[0].health > 0 && players[1].health > 0);
+}
+function checkWinner(){
+    if (players[0].health === 0) {
+        alert("joueur Rouge à gagné")
+    } else if (players[1].health === 0){
+        alert("joueur bleu à gagné")
     }
-    return choice;
-});
-var player2Choice = $('input[name=player2]').click(function() {
-    var action = document.getElementsByName(player);
-    var choice;
-    for (var i = 0; i < action.length; i++) {
-        if (action[i].checked) {
-            choice = action[i].value;
-        }
+}
+function onclick(playerChoice){
+    setPlayerChoice(playerChoice);
+    if(checkFight()){
+        fight();
+        checkWinner();
     }
-    return choice;
-});*/
+}
+$('input[name=player1]').click(onclick);
+$('input[name=player2]').click(onclick);
