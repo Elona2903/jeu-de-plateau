@@ -189,6 +189,7 @@ var board = {
         for (var i = 0; i < nearbyCase.length; i++) {
             if ($("#" + parseInt(nearbyCase[i]) + " :first-child").attr("class") === "player") {
                 fight();
+                console.log("fight")
             }
         }
     }
@@ -207,7 +208,7 @@ var game = {
         wood.init("Bois", 5, "image/bois.jpg");
         var rapier = Object.create(weaponEx);
         rapier.init("Rapière", 10, "image/rapiere.jpg");
-         var sword = Object.create(weaponEx);
+        var sword = Object.create(weaponEx);
         sword.init("epee", 10, "image/epee.jpg");
         weapons.push(scepter, sling, wood, rapier, sword);
         //initialisation des différents personnages
