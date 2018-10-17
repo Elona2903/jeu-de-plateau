@@ -37,7 +37,6 @@ var newPlayer = {
         } else if (action === "defend") {
             this.health -= opponent.getDamage(0.5);
         }
-        alert(player.name + ' PV : ' + player.health);
     },
     //fonction contenant les actions d'un mouvement
     moveToLeft: function() {
@@ -188,8 +187,10 @@ var board = {
         nearbyCase = [player.positionCaseId() + 1, player.positionCaseId() - 1, player.positionCaseId() + 10, player.positionCaseId() - 10];
         for (var i = 0; i < nearbyCase.length; i++) {
             if ($("#" + parseInt(nearbyCase[i]) + " :first-child").attr("class") === "player") {
+
+                $(document).unbind("keydown")
+                console.log("fight");
                 fight();
-                console.log("fight")
             }
         }
     }
@@ -218,9 +219,15 @@ var game = {
         playerTwo.init("joueurBleu", weapons[4], "image/joueur2.jpg", 37, 39, 38, 40);
         players.push(playerOne, playerTwo);
         //affichage de la grille
-        board.init()
-
-        //$('input').attr("disabled", "disabled");
+        board.init();
+        //affichage données des joueurs
+        $('.droitej1').append(String.fromCharCode(players[0].right));
+        $('.gauchej1').append(String.fromCharCode(players[0].left));
+        $('.hautj1').append(String.fromCharCode(players[0].up));
+        $('.basj1').append(String.fromCharCode(players[0].down));
+        $('.santej1').text("santé " + parseInt(players[0].health));
+        $('.santej2').text("santé " + parseInt(players[0].health));
+        $('input').attr("disabled", "disabled");
     }
 };
 
@@ -228,10 +235,3 @@ var game = {
 game.init();
 var nbTurn = 0;
 var player = players[1];
-//affichage données des joueurs:;
-$('.droitej1').append(String.fromCharCode(players[0].right));
-$('.gauchej1').append(String.fromCharCode(players[0].left));
-$('.hautj1').append(String.fromCharCode(players[0].up));
-$('.basj1').append(String.fromCharCode(players[0].down));
-$('.santej1').text("santé " + parseInt(players[0].health));
-$('.santej2').text("santé " + parseInt(players[0].health));
