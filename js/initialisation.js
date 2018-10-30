@@ -204,7 +204,7 @@ var game = {
         var scepter = Object.create(weaponEx);
         scepter.init("Sceptre", 20, "image/sceptre.jpg");
         var sling = Object.create(weaponEx);
-        sling.init("Fronde", 15, "image/fronde.jpg");
+        sling.init("Fronde", 15, "image/masse.jpg");
         var wood = Object.create(weaponEx);
         wood.init("Bois", 5, "image/bois.jpg");
         var rapier = Object.create(weaponEx);

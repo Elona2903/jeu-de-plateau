@@ -4,7 +4,11 @@
     height: 600px;
     background-color: white
 }
-
+body{
+    font-family:Snell Roundhand, cursive;
+    font-style: oblique;
+}
+h1,
 h2,
 h3 {
     text-align: center;
