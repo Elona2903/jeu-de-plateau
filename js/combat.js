@@ -21,6 +21,7 @@ function onclick(players, choice) {
         checkWinner();
     }
 }
+
 $('input[name=player1]').click(function() {
     choicePlayer1 = ($(this).attr("value"));
     $('input[name=player2]').removeAttr("disabled");
