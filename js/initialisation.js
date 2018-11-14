@@ -96,7 +96,9 @@ var newPlayer = {
                     ($("#" + weapons[i].name + "")).remove();
                     $("<img class='weapon' id=" + this.weapon.name + " src='" + this.weapon.image + "' alt='" + this.weapon.name + "'/>").appendTo($("#" + idCase + ""));
                     this.weapon = weapons[i];
+
                 };
+
 
             };
         };
@@ -210,7 +212,7 @@ var game = {
         var rapier = Object.create(weaponEx);
         rapier.init("Rapière", 10, "image/rapiere.jpg");
         var sword = Object.create(weaponEx);
-        sword.init("epee", 10, "image/epee.jpg");
+        sword.init("Epée", 10, "image/epee.jpg");
         weapons.push(scepter, sling, wood, rapier, sword);
         //initialisation des différents personnages
         var playerOne = Object.create(newPlayer);
@@ -221,12 +223,12 @@ var game = {
         //affichage de la grille
         board.init();
         //affichage données des joueurs
-        $('.droitej1').append(String.fromCharCode(players[0].right));
-        $('.gauchej1').append(String.fromCharCode(players[0].left));
-        $('.hautj1').append(String.fromCharCode(players[0].up));
-        $('.basj1').append(String.fromCharCode(players[0].down));
-        $('.santej1').text("santé " + parseInt(players[0].health));
-        $('.santej2').text("santé " + parseInt(players[0].health));
+        $('.armej1').append(players[0].weapon.name);
+        $('.degatsj1').append(players[0].weapon.damage);
+        $('.armej2').append(players[1].weapon.name);
+        $('.degatsj2').append(players[1].weapon.damage);
+        $('.santej1').text(parseInt(players[0].health));
+        $('.santej2').text(parseInt(players[0].health));
         $('input').attr("disabled", "disabled");
     }
 };
@@ -235,3 +237,11 @@ var game = {
 game.init();
 var nbTurn = 0;
 var player = players[1];
+
+// if (player = players[0]) {
+//     $('.armej1').replaceWith(this.weapon.name);
+//     $('.degatsj1').replaceWith(this.weapon.damage);
+// } else if (player = players[1]) {
+//     $('.armej2').replaceWith(this.weapon.name);
+//     $('.degatsj2').replaceWith(this.weapon.damage);
+// }
