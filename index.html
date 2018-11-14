@@ -14,18 +14,21 @@
     <div class="jeu">
 
         <div id="joueur1" class="infojoueur">
-            <h2>joueur 1</h2>
-            <h3>se déplacer</h3>
-            <div class="move">
-                <p>A droite <span class="droitej1" onclick="alert('On fait comme ça !');"></span> </p>
-                <p>A gauche <span class="gauchej1" onclick="alert('On fait comme ça !');"></span></p>
-                <p>En haut <span class="hautj1" onclick="alert('On fait comme ça !');"></span></p>
-                <p>En bas <span class="basj1" onclick="alert('On fait comme ça !');"></span></p>
-
+            <div class="joueur1name">
+                <h2>joueur 1</h2>
             </div>
-            <p class='santej1'></p>
-            <input type="button" value="attaquer" name="player1">
-            <input type="button" value="se défendre" name="player1">
+
+            <h3>Se déplacer :</h3>
+            <div class="move">
+                <img src='image/movej1.gif'>
+            </div>
+            <h3>Informations du joueur :</h3>
+            <h4>Arme :</h4>
+            <p>Nom : <span class='armej1'></span></p>
+            <p>Dégats : <span class='degatsj1'></span></p>
+            <h4>Santé : <span class='santej1'></span></h4>
+            <input class="boutonattaque" type="button" value="attaquer" name="player1">
+            <input class="boutondefense" type="button" value="se défendre" name="player1">
         </div>
         <div class="plateau">
             <div id="jeu">
@@ -34,13 +37,18 @@
         <div id="joueur2" class="infojoueur">
             <h2>joueur 2</h2>
 
-            <h3>se déplacer</h3>
+            <h3>Se déplacer</h3>
             <div class="move">
-                <p>Flèches directionnelles</p>
+                <img src='image/movej2.gif'>
             </div>
-            <p class='santej2'></p>
-            <input type="button" value="attaquer" name="player2">
-            <input type="button" value="se défendre" name="player2">
+            <h3>Informations du joueur :</h3>
+
+            <h4>Arme :</h4>
+            <p>Nom : <span class='armej2'></span></p>
+            <p>Dégats : <span class='degatsj2'></span></p>
+            <h4>Santé : <span class='santej2'></span></h4>
+            <input class="boutonattaque" type="button" value="attaquer" name="player2">
+            <input class="boutondefense" type="button" value="se défendre" name="player2">
         </div>
         <div class="victoire"></div>
         <script src="http://code.jquery.com/jquery.js"></script>
