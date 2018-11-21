@@ -143,6 +143,12 @@ var board = {
         while (placedPlayers < players.length) {
             var randomCase = parseFloat(Math.floor(Math.random() * this.nbCase));
             var idPlayerStartingCase = $('.case')[randomCase];
+            nearbyCase = [player.positionCaseId() + 1, player.positionCaseId() - 1, player.positionCaseId() + 10, player.positionCaseId() - 10];
+            for (var i = 0; i < nearbyCase.length; i++) {
+                if ($("#" + parseInt(nearbyCase[i]) + " :first-child").attr("class") === "player") {
+
+                }
+            }
             if (idPlayerStartingCase.style.backgroundColor !== "grey") {
                 $("<img class='player' id=" + players[placedPlayers].name + " src='" + players[placedPlayers].image + "' alt='" + players[placedPlayers].name + "'/>").appendTo($('.case')[randomCase]);
                 placedPlayers++;
