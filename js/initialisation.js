@@ -99,6 +99,13 @@ var newPlayer = {
 
                 };
 
+                if (player === players[0]) {
+                    $('.armej1').text(this.weapon.name);
+                    $('.degatsj1').text(this.weapon.damage);
+                } else if (player === players[1]) {
+                    $('.armej2').text(this.weapon.name);
+                    $('.degatsj2').text(this.weapon.damage);
+                }
 
             };
         };
@@ -110,6 +117,129 @@ var board = {
     nbRow: 10,
     nbCase: 100,
     nbObstacle: 20,
+    placeObstacle: function() {
+        //génération aléatoire des obstacles;
+        var placedObstacle = 0;
+        while (placedObstacle < this.nbObstacle) {
+            var randomCase = parseFloat(Math.floor(Math.random() * this.nbCase));
+            var obstacleCase = $('.case')[randomCase];
+            if (obstacleCase.style.backgroundColor !== "grey") {
+                var obstacle = $('.case')[randomCase];
+                obstacle.style.backgroundColor = "grey";
+                placedObstacle++;
+            };
+        };
+    },
+    getNearbyCase(randomCase) {
+        nearbyCase = [];
+        nearbyCaseP = [];
+        if (randomCase < 10) {
+            nearbyCase = [$('.case')[randomCase - 1], $('.case')[randomCase + 1], $('.case')[randomCase + 10]];
+            nearbyCaseP = [$('.case :nth-child(' + parseFloat(randomCase - 1) + ')'),
+                $('.case :nth-child(' + parseFloat(randomCase + 1) + ')'), , $('.case :nth-child(' + parseFloat(randomCase + 10) + ')')
+            ];
+        } else if (randomCase % 10 === 0) {
+            nearbyCase = [$('.case')[randomCase + 1],
+                $('.case')[randomCase - 10],
+                $('.case')[randomCase + 10]
+            ];
+            nearbyCaseP = [$('.case :nth-child(' + parseFloat(randomCase + 1) + ')'),
+                $('.case :nth-child(' + parseFloat(randomCase - 10) + ')'),
+                $('.case :nth-child(' + parseFloat(randomCase + 10) + ')')
+            ];
+        } else if (randomCase % 10 === 9) {
+            nearbyCase = [$('.case')[randomCase - 1],
+                $('.case')[randomCase - 10],
+                $('.case')[randomCase + 10]
+            ];
+            nearbyCaseP = [$('.case :nth-child(' + parseFloat(randomCase - 1) + ')'),
+                $('.case :nth-child(' + parseFloat(randomCase - 10) + ')'),
+                $('.case :nth-child(' + parseFloat(randomCase + 10) + ')')
+            ];
+        } else if (randomCase > 89) {
+            nearbyCase = [$('.case')[randomCase - 1],
+                $('.case')[randomCase + 1],
+                $('.case')[randomCase - 10],
+            ];
+            nearbyCaseP = [$('.case :nth-child(' + parseFloat(randomCase - 1) + ')'),
+                $('.case :nth-child(' + parseFloat(randomCase + 1) + ')'),
+                $('.case :nth-child(' + parseFloat(randomCase - 10) + ')')
+            ];
+
+        } else if (randomCase === 0) {
+            nearbyCase = [$('.case')[randomCase + 1],
+                $('.case')[randomCase + 10]
+            ];
+            nearbyCaseP = [$('.case :nth-child(' + parseFloat(randomCase + 1) + ')'),
+                $('.case :nth-child(' + parseFloat(randomCase + 10) + ')')
+            ];
+        } else if (randomCase === 9) {
+            nearbyCase = [$('.case')[randomCase - 1], $('.case')[randomCase + 10]];
+            nearbyCaseP = [$('.case :nth-child(' + parseFloat(randomCase - 1) + ')'),
+                $('.case :nth-child(' + parseFloat(randomCase + 10) + ')')
+            ];
+        } else if (randomCase === 90) {
+            nearbyCase = [$('.case')[randomCase + 1], $('.case')[randomCase - 10]];
+            nearbyCaseP = [$('.case :nth-child(' + parseFloat(randomCase + 1) + ')'),
+                $('.case :nth-child(' + parseFloat(randomCase - 10) + ')')
+            ];
+        } else if (randomCase === 99) {
+            nearbyCase = [$('.case')[randomCase - 1], $('.case')[randomCase - 10], ];
+            nearbyCaseP = [$('.case :nth-child(' + parseFloat(randomCase - 1) + ')'),
+                $('.case :nth-child(' + parseFloat(randomCase - 10) + ')'),
+            ];
+        } else {
+            nearbyCase = [$('.case')[randomCase - 1], $('.case')[randomCase + 1], $('.case')[randomCase - 10], $('.case')[randomCase + 10]];
+            nearbyCaseP = [$('.case :nth-child(' + parseFloat(randomCase - 1) + ')'),
+                $('.case :nth-child(' + parseFloat(randomCase + 1) + ')'),
+                $('.case :nth-child(' + parseFloat(randomCase - 10) + ')'), $('.case :nth-child(' + parseFloat(randomCase + 10) + ')')
+            ];
+        }
+        return nearbyCase;
+        return nearbyCaseP;
+    },
+    placePlayer: function() {
+        var placedPlayers = 0;
+        while (placedPlayers < players.length) {
+
+            var isPlayerPlaceable = true;
+            var randomCase = parseFloat(Math.floor(Math.random() * this.nbCase));
+            var PlayerStartingCase = $('.case')[randomCase];
+            this.getNearbyCase(randomCase);
+            for (var i = 0; i < nearbyCase.length; i++) {
+                if (nearbyCase[i].style.backgroundColor === "grey" ||
+                    (nearbyCaseP[i]).find(">:first-child").attr('class') !== 'player') {
+                    isPlayerPlaceable = true;
+                }
+            }
+            if (PlayerStartingCase.style.backgroundColor !== "grey" && isPlayerPlaceable === true) {
+                $("<img class='player' id=" + players[placedPlayers].name + " src='" + players[placedPlayers].image + "' alt='" + players[placedPlayers].name + "'/>").appendTo($('.case')[randomCase]);
+                placedPlayers++;
+            };
+        }
+
+    },
+    placeWeapon: function() {
+        placedWeapons = 0;
+        while (placedWeapons < 3) {
+            isWeaponPlaceable = false
+            var randomCase = parseFloat(Math.floor(Math.random() * this.nbCase));
+            var idWeaponCase = $('.case')[randomCase];
+            this.getNearbyCase(randomCase);
+            for (var i = 0; i < nearbyCase.length; i++) {
+                if (nearbyCase[i].style.backgroundColor === "grey" ||
+                    (nearbyCaseP[i]).find(">:first-child").attr('class') !== 'player' ||
+                    (nearbyCaseP[i]).find(">:first-child").attr('class') !== 'weapon') {
+                    isWeaponPlaceable = true;
+                }
+            }
+            if (idWeaponCase.style.backgroundColor !== "grey" && isWeaponPlaceable === true) {
+                $("<img class='weapon' id=" + weapons[placedWeapons].name + " src='" + weapons[placedWeapons].image + "' alt='" + weapons[placedWeapons].name + "'/>").appendTo($('.case')[randomCase]);
+                placedWeapons++
+            };
+        };
+    },
+
     //initialisation du plateau
     init: function() {
         //ligne
@@ -127,43 +257,10 @@ var board = {
             var cases = document.getElementsByClassName('case');
             cases[i].setAttribute("id", nombre);
         };
-        //génération aléatoire des obstacles;
-        var placedObstacle = 0;
-        while (placedObstacle < this.nbObstacle) {
-            var randomCase = parseFloat(Math.floor(Math.random() * this.nbCase));
-            var obstacleCase = $('.case')[randomCase];
-            if (obstacleCase.style.backgroundColor !== "grey") {
-                var obstacle = $('.case')[randomCase];
-                obstacle.style.backgroundColor = "grey";
-                placedObstacle++;
-            };
-        };
-        //positionnement des joueurs;
-        placedPlayers = 0;
-        while (placedPlayers < players.length) {
-            var randomCase = parseFloat(Math.floor(Math.random() * this.nbCase));
-            var idPlayerStartingCase = $('.case')[randomCase];
-            nearbyCase = [player.positionCaseId() + 1, player.positionCaseId() - 1, player.positionCaseId() + 10, player.positionCaseId() - 10];
-            for (var i = 0; i < nearbyCase.length; i++) {
-                if ($("#" + parseInt(nearbyCase[i]) + " :first-child").attr("class") === "player") {
+        this.placeObstacle();
+        this.placePlayer();
+        this.placeWeapon();
 
-                }
-            }
-            if (idPlayerStartingCase.style.backgroundColor !== "grey") {
-                $("<img class='player' id=" + players[placedPlayers].name + " src='" + players[placedPlayers].image + "' alt='" + players[placedPlayers].name + "'/>").appendTo($('.case')[randomCase]);
-                placedPlayers++;
-            };
-        };
-        //positionnement des armes ;
-        placedWeapons = 0;
-        while (placedWeapons < 3) {
-            var randomCase = parseFloat(Math.floor(Math.random() * this.nbCase));
-            var idWeaponCase = $('.case')[randomCase];
-            if (idWeaponCase.style.backgroundColor !== "grey") {
-                $("<img class='weapon' id=" + weapons[placedWeapons].name + " src='" + weapons[placedWeapons].image + "' alt='" + weapons[placedWeapons].name + "'/>").appendTo($('.case')[randomCase]);
-                placedWeapons++
-            };
-        };
     },
     //vérifie si la case ciblée est un obstacle
     isTargetedCaseAnObstacle: function(idTargetedCase) {
@@ -243,11 +340,3 @@ var game = {
 game.init();
 var nbTurn = 0;
 var player = players[1];
-
-// if (player = players[0]) {
-//     $('.armej1').replaceWith(this.weapon.name);
-//     $('.degatsj1').replaceWith(this.weapon.damage);
-// } else if (player = players[1]) {
-//     $('.armej2').replaceWith(this.weapon.name);
-//     $('.degatsj2').replaceWith(this.weapon.damage);
-// }
