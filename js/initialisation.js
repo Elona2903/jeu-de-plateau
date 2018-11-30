@@ -130,85 +130,63 @@ var board = {
             };
         };
     },
-    getNearbyCase(randomCase) {
+    getCaseToTest(randomCase) {
         nearbyCase = [];
-        nearbyCaseP = [];
-        if (randomCase < 10) {
-            nearbyCase = [$('.case')[randomCase - 1], $('.case')[randomCase + 1], $('.case')[randomCase + 10]];
-            nearbyCaseP = [$('.case :nth-child(' + parseFloat(randomCase - 1) + ')'),
-                $('.case :nth-child(' + parseFloat(randomCase + 1) + ')'), , $('.case :nth-child(' + parseFloat(randomCase + 10) + ')')
-            ];
+        if (randomCase === 0) {
+            nearbyCase = [$('.case')[randomCase + 1],
+                $('.case')[randomCase + 10],
+                $('.case')[randomCase]
+            ]
+
+        } else if (randomCase === 9) {
+            nearbyCase = [$('.case')[randomCase - 1], $('.case')[randomCase + 10], $('.case')[randomCase]];
+
+        } else if (randomCase === 90) {
+            nearbyCase = [$('.case')[randomCase + 1], $('.case')[randomCase - 10], $('.case')[randomCase]];
+
+        } else if (randomCase === 99) {
+            nearbyCase = [$('.case')[randomCase - 1], $('.case')[randomCase - 10], $('.case')[randomCase]];
+
         } else if (randomCase % 10 === 0) {
             nearbyCase = [$('.case')[randomCase + 1],
                 $('.case')[randomCase - 10],
-                $('.case')[randomCase + 10]
+                $('.case')[randomCase + 10], $('.case')[randomCase]
             ];
-            nearbyCaseP = [$('.case :nth-child(' + parseFloat(randomCase + 1) + ')'),
-                $('.case :nth-child(' + parseFloat(randomCase - 10) + ')'),
-                $('.case :nth-child(' + parseFloat(randomCase + 10) + ')')
-            ];
+
         } else if (randomCase % 10 === 9) {
             nearbyCase = [$('.case')[randomCase - 1],
                 $('.case')[randomCase - 10],
-                $('.case')[randomCase + 10]
+                $('.case')[randomCase + 10], $('.case')[randomCase]
             ];
-            nearbyCaseP = [$('.case :nth-child(' + parseFloat(randomCase - 1) + ')'),
-                $('.case :nth-child(' + parseFloat(randomCase - 10) + ')'),
-                $('.case :nth-child(' + parseFloat(randomCase + 10) + ')')
-            ];
+
         } else if (randomCase > 89) {
             nearbyCase = [$('.case')[randomCase - 1],
                 $('.case')[randomCase + 1],
-                $('.case')[randomCase - 10],
-            ];
-            nearbyCaseP = [$('.case :nth-child(' + parseFloat(randomCase - 1) + ')'),
-                $('.case :nth-child(' + parseFloat(randomCase + 1) + ')'),
-                $('.case :nth-child(' + parseFloat(randomCase - 10) + ')')
+                $('.case')[randomCase - 10], $('.case')[randomCase]
             ];
 
-        } else if (randomCase === 0) {
-            nearbyCase = [$('.case')[randomCase + 1],
-                $('.case')[randomCase + 10]
-            ];
-            nearbyCaseP = [$('.case :nth-child(' + parseFloat(randomCase + 1) + ')'),
-                $('.case :nth-child(' + parseFloat(randomCase + 10) + ')')
-            ];
-        } else if (randomCase === 9) {
-            nearbyCase = [$('.case')[randomCase - 1], $('.case')[randomCase + 10]];
-            nearbyCaseP = [$('.case :nth-child(' + parseFloat(randomCase - 1) + ')'),
-                $('.case :nth-child(' + parseFloat(randomCase + 10) + ')')
-            ];
-        } else if (randomCase === 90) {
-            nearbyCase = [$('.case')[randomCase + 1], $('.case')[randomCase - 10]];
-            nearbyCaseP = [$('.case :nth-child(' + parseFloat(randomCase + 1) + ')'),
-                $('.case :nth-child(' + parseFloat(randomCase - 10) + ')')
-            ];
-        } else if (randomCase === 99) {
-            nearbyCase = [$('.case')[randomCase - 1], $('.case')[randomCase - 10], ];
-            nearbyCaseP = [$('.case :nth-child(' + parseFloat(randomCase - 1) + ')'),
-                $('.case :nth-child(' + parseFloat(randomCase - 10) + ')'),
-            ];
+        } else if (randomCase < 10) {
+            nearbyCase = [$('.case')[randomCase - 1], $('.case')[randomCase + 1], $('.case')[randomCase + 10], $('.case')[randomCase]];
         } else {
-            nearbyCase = [$('.case')[randomCase - 1], $('.case')[randomCase + 1], $('.case')[randomCase - 10], $('.case')[randomCase + 10]];
-            nearbyCaseP = [$('.case :nth-child(' + parseFloat(randomCase - 1) + ')'),
-                $('.case :nth-child(' + parseFloat(randomCase + 1) + ')'),
-                $('.case :nth-child(' + parseFloat(randomCase - 10) + ')'), $('.case :nth-child(' + parseFloat(randomCase + 10) + ')')
-            ];
+            nearbyCase = [$('.case')[randomCase - 1], $('.case')[randomCase + 1], $('.case')[randomCase - 10], $('.case')[randomCase], $('.case')[randomCase + 10]];
+
         }
         return nearbyCase;
-        return nearbyCaseP;
     },
     placePlayer: function() {
         var placedPlayers = 0;
         while (placedPlayers < players.length) {
-
-            var isPlayerPlaceable = true;
+            var caseNotOccuped = 0
+            var isPlayerPlaceable = false;
             var randomCase = parseFloat(Math.floor(Math.random() * this.nbCase));
             var PlayerStartingCase = $('.case')[randomCase];
-            this.getNearbyCase(randomCase);
+            this.getCaseToTest(randomCase);
             for (var i = 0; i < nearbyCase.length; i++) {
-                if (nearbyCase[i].style.backgroundColor === "grey" ||
-                    (nearbyCaseP[i]).find(">:first-child").attr('class') !== 'player') {
+                if ($(nearbyCase[i]).find(">:first-child").attr('class') !== 'player' &&
+                    $(nearbyCase[i]).find(">:first-child").attr('class') !== 'weapon') {
+                    caseNotOccuped++
+                }
+                if (nearbyCase[i].style.backgroundColor !== "grey" && caseNotOccuped === 4) {
                     isPlayerPlaceable = true;
                 }
             }
@@ -222,14 +200,17 @@ var board = {
     placeWeapon: function() {
         placedWeapons = 0;
         while (placedWeapons < 3) {
+            var caseNotOccuped = 0
             isWeaponPlaceable = false
             var randomCase = parseFloat(Math.floor(Math.random() * this.nbCase));
             var idWeaponCase = $('.case')[randomCase];
-            this.getNearbyCase(randomCase);
+            this.getCaseToTest(randomCase);
             for (var i = 0; i < nearbyCase.length; i++) {
-                if (nearbyCase[i].style.backgroundColor === "grey" ||
-                    (nearbyCaseP[i]).find(">:first-child").attr('class') !== 'player' ||
-                    (nearbyCaseP[i]).find(">:first-child").attr('class') !== 'weapon') {
+                if ($(nearbyCase[i]).find(">:first-child").attr('class') !== 'player' &&
+                    $(nearbyCase[i]).find(">:first-child").attr('class') !== 'weapon') {
+                    caseNotOccuped++
+                }
+                if (nearbyCase[i].style.backgroundColor !== "grey" && caseNotOccuped === 4) {
                     isWeaponPlaceable = true;
                 }
             }
