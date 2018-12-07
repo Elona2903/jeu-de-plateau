@@ -101,6 +101,7 @@ var newPlayer = {
 
                 if (player === players[0]) {
                     $('.armej1').text(this.weapon.name);
+                    $('.armej1').text(this.weapon.name);
                     $('.degatsj1').text(this.weapon.damage);
                 } else if (player === players[1]) {
                     $('.armej2').text(this.weapon.name);
@@ -116,7 +117,7 @@ var board = {
     nbCol: 10,
     nbRow: 10,
     nbCase: 100,
-    nbObstacle: 20,
+    nbObstacle: 15,
     placeObstacle: function() {
         //génération aléatoire des obstacles;
         var placedObstacle = 0;
@@ -135,40 +136,69 @@ var board = {
         if (randomCase === 0) {
             nearbyCase = [$('.case')[randomCase + 1],
                 $('.case')[randomCase + 10],
-                $('.case')[randomCase]
+                $('.case')[randomCase], 3
             ]
 
         } else if (randomCase === 9) {
-            nearbyCase = [$('.case')[randomCase - 1], $('.case')[randomCase + 10], $('.case')[randomCase]];
+            nearbyCase = [$('.case')[randomCase - 1],
+                $('.case')[randomCase + 10],
+                $('.case')[randomCase],
+                3
+            ];
 
         } else if (randomCase === 90) {
-            nearbyCase = [$('.case')[randomCase + 1], $('.case')[randomCase - 10], $('.case')[randomCase]];
+            nearbyCase = [$('.case')[randomCase + 1],
+                $('.case')[randomCase - 10],
+                $('.case')[randomCase],
+                3
+            ];
 
         } else if (randomCase === 99) {
-            nearbyCase = [$('.case')[randomCase - 1], $('.case')[randomCase - 10], $('.case')[randomCase]];
+            nearbyCase = [$('.case')[randomCase - 1],
+                $('.case')[randomCase - 10],
+                $('.case')[randomCase],
+                3
+            ];
 
         } else if (randomCase % 10 === 0) {
             nearbyCase = [$('.case')[randomCase + 1],
                 $('.case')[randomCase - 10],
-                $('.case')[randomCase + 10], $('.case')[randomCase]
+                $('.case')[randomCase + 10],
+                $('.case')[randomCase],
+                4
             ];
 
         } else if (randomCase % 10 === 9) {
             nearbyCase = [$('.case')[randomCase - 1],
                 $('.case')[randomCase - 10],
-                $('.case')[randomCase + 10], $('.case')[randomCase]
+                $('.case')[randomCase + 10],
+                $('.case')[randomCase],
+                4
             ];
 
         } else if (randomCase > 89) {
             nearbyCase = [$('.case')[randomCase - 1],
                 $('.case')[randomCase + 1],
-                $('.case')[randomCase - 10], $('.case')[randomCase]
+                $('.case')[randomCase - 10],
+                $('.case')[randomCase],
+                4
             ];
 
         } else if (randomCase < 10) {
-            nearbyCase = [$('.case')[randomCase - 1], $('.case')[randomCase + 1], $('.case')[randomCase + 10], $('.case')[randomCase]];
+            nearbyCase = [$('.case')[randomCase - 1],
+                $('.case')[randomCase + 1],
+                $('.case')[randomCase + 10],
+                $('.case')[randomCase],
+                4
+            ];
         } else {
-            nearbyCase = [$('.case')[randomCase - 1], $('.case')[randomCase + 1], $('.case')[randomCase - 10], $('.case')[randomCase], $('.case')[randomCase + 10]];
+            nearbyCase = [$('.case')[randomCase - 1],
+                $('.case')[randomCase + 1],
+                $('.case')[randomCase - 10],
+                $('.case')[randomCase],
+                $('.case')[randomCase + 10],
+                5
+            ];
 
         }
         return nearbyCase;
@@ -181,14 +211,16 @@ var board = {
             var randomCase = parseFloat(Math.floor(Math.random() * this.nbCase));
             var PlayerStartingCase = $('.case')[randomCase];
             this.getCaseToTest(randomCase);
-            for (var i = 0; i < nearbyCase.length; i++) {
-                if ($(nearbyCase[i]).find(">:first-child").attr('class') !== 'player' &&
+            for (var i = 0; i < nearbyCase.length - 1; i++) {
+                if (nearbyCase[i].style.backgroundColor !== "grey" &&
+                    $(nearbyCase[i]).find(">:first-child").attr('class') !== 'player' &&
                     $(nearbyCase[i]).find(">:first-child").attr('class') !== 'weapon') {
                     caseNotOccuped++
                 }
-                if (nearbyCase[i].style.backgroundColor !== "grey" && caseNotOccuped === 4) {
-                    isPlayerPlaceable = true;
-                }
+
+            }
+            if (caseNotOccuped === nearbyCase[nearbyCase.length - 1]) {
+                isPlayerPlaceable = true;
             }
             if (PlayerStartingCase.style.backgroundColor !== "grey" && isPlayerPlaceable === true) {
                 $("<img class='player' id=" + players[placedPlayers].name + " src='" + players[placedPlayers].image + "' alt='" + players[placedPlayers].name + "'/>").appendTo($('.case')[randomCase]);
@@ -205,12 +237,13 @@ var board = {
             var randomCase = parseFloat(Math.floor(Math.random() * this.nbCase));
             var idWeaponCase = $('.case')[randomCase];
             this.getCaseToTest(randomCase);
-            for (var i = 0; i < nearbyCase.length; i++) {
-                if ($(nearbyCase[i]).find(">:first-child").attr('class') !== 'player' &&
+            for (var i = 0; i < nearbyCase.length - 1; i++) {
+                if (nearbyCase[i].style.backgroundColor !== "grey" &&
+                    $(nearbyCase[i]).find(">:first-child").attr('class') !== 'player' &&
                     $(nearbyCase[i]).find(">:first-child").attr('class') !== 'weapon') {
                     caseNotOccuped++
                 }
-                if (nearbyCase[i].style.backgroundColor !== "grey" && caseNotOccuped === 4) {
+                if (caseNotOccuped === nearbyCase[nearbyCase.length - 1]) {
                     isWeaponPlaceable = true;
                 }
             }
@@ -288,15 +321,15 @@ var game = {
 
         //initialisation des différentes armes
         var scepter = Object.create(weaponEx);
-        scepter.init("Sceptre", 20, "image/sceptre.jpg");
+        scepter.init("Lance", 20, "image/spear.png");
         var sling = Object.create(weaponEx);
-        sling.init("Fronde", 15, "image/masse.jpg");
+        sling.init("Hache", 15, "image/axe.png");
         var wood = Object.create(weaponEx);
-        wood.init("Bois", 5, "image/bois.jpg");
+        wood.init("Marteau", 5, "image/hammer.png");
         var rapier = Object.create(weaponEx);
-        rapier.init("Rapière", 10, "image/rapiere.jpg");
+        rapier.init("Dague", 10, "image/dagger.png");
         var sword = Object.create(weaponEx);
-        sword.init("Epée", 10, "image/epee.jpg");
+        sword.init("Epée", 10, "image/sword.png");
         weapons.push(scepter, sling, wood, rapier, sword);
         //initialisation des différents personnages
         var playerOne = Object.create(newPlayer);
@@ -307,6 +340,8 @@ var game = {
         //affichage de la grille
         board.init();
         //affichage données des joueurs
+        $('.visuel1').attr("src", players[0].weapon.image);
+        $('.visuel2').attr("src", players[1].weapon.image);
         $('.armej1').append(players[0].weapon.name);
         $('.degatsj1').append(players[0].weapon.damage);
         $('.armej2').append(players[1].weapon.name);

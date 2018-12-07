@@ -1,12 +1,12 @@
 #jeu {
-    position: relative;
     width: 600px;
     height: 600px;
     background-color: white
 }
 
 body {
-    font-family: 'Courier New', Courier, monospace
+    font-family: 'Courier New', Courier, monospace;
+    background-color: gainsboro;
 }
 
 h1,
@@ -14,19 +14,57 @@ h2 {
     text-align: center;
 }
 
-.infojoueur {
-    width: 25%;
+h2 {
+    padding-bottom: 20px;
+}
+
+h3,
+h4 {
     text-align: left;
+    padding-left: 20px;
+}
+
+.infojoueur {
+    text-align: left;
+    margin-left: auto;
+    margin-right: auto;
+    width: 300px;
+}
+
+.arme {
+    border: solid 2px;
+    height: 300px;
+}
+
+.visuel {
+    padding-top: 19px;
+    text-align: center;
+}
+
+.joueurname {
+    padding-top: 19px;
+    text-align: center;
+    border: solid 2px;
+}
+
+.deplacement {
+    display: flex;
+    padding-right: 20px;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    /* border-style: solid;
+    border-width: 2px 2px 2px 2px; */
 }
 
 .plateau {
-    width: 50%;
     display: flex;
     justify-content: center
 }
 
 .move {
-    width: 400px;
+    width: 300px;
     height: 100px;
 }
 
@@ -64,10 +102,6 @@ h2 {
     z-index: 2;
 }
 
-body {
-    background-color: antiquewhite;
-}
-
 .weapon {
     padding-top: 0px;
     padding-left: 0px;
@@ -85,13 +119,17 @@ body {
     background-position: center;
 }
 
+input:disabled {
+    visibility: hidden;
+}
+
 .boutondefense {
     color: rgba(255, 255, 255, 0);
     width: 85px;
     height: 85px;
     border-radius: 50%;
     background-color: white;
-    background-image: url('../image/def.jpg');
+    background-image: url('../image/def.png');
     background-repeat: no-repeat;
     background-position: center;
 }

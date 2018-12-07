@@ -49,13 +49,17 @@ function fight() {
             alert("les points de vie des joueurs n'ont pas changés")
         }
 
-        $('.santej1').text("santé " + parseInt(players[0].health));
-        $('.santej2').text("santé " + parseInt(players[1].health));
+        $('.santej1').text(parseInt(players[0].health));
+        $('.santej2').text(parseInt(players[1].health));
     } else {
-        if (players[0].health > 0) {
+        if (players[0].health <= 0) {
             $('.victoire').text(players[1].name + " a gagné");
-        } else if (players[1].health > 0) {
+            players[0].health = 0
+            $('.santej1').text(parseInt(players[0].health));
+        } else if (players[1].health >= 0) {
             $('.victoire').text(players[0].name + " a gagné");
+            players[1].health = 0
+            $('.santej1').text(parseInt(players[0].health));
         }
     }
 }
